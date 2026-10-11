@@ -1,0 +1,24 @@
+{
+  "name": "pune-fresher-job-tracker",
+  "version": "1.0.0",
+  "description": "Local job tracker for fresher openings in Pune, aggregating Greenhouse, Lever, Internshala and Naukri listings.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "fetch": "node scripts/fetch.js",
+    "seed": "node scripts/seed.js"
+  },
+  "engines": {
+    "node": ">=18.11.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "better-sqlite3": "^11.3.0",
+    "cheerio": "^1.0.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "node-cron": "^3.0.3"
+  }
+}

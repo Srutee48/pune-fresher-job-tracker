@@ -1,0 +1,52 @@
+<%- include('partials/header', { title: 'Jobs' }) %>
+<h1>Fresher jobs in Pune</h1>
+
+<form class="filters" method="get" action="/">
+  <input type="search" name="q" placeholder="Search title or company" value="<%= filters.q %>" aria-label="Search jobs">
+  <select name="source" aria-label="Source">
+    <option value="">All sources</option>
+    <% sources.forEach((s) => { %>
+      <option value="<%= s %>" <%= filters.source === s ? 'selected' : '' %>><%= s %></option>
+    <% }) %>
+  </select>
+  <select name="sort" aria-label="Sort by">
+    <option value="posted" <%= filters.sort === 'posted' ? 'selected' : '' %>>Sort by posted date</option>
+    <option value="first_seen" <%= filters.sort === 'first_seen' ? 'selected' : '' %>>Sort by date added</option>
+  </select>
+  <label class="toggle">
+    <input type="checkbox" name="active" value="1" <%= filters.activeOnly ? 'checked' : '' %>>
+    Active only
+  </label>
+  <button type="submit">Apply</button>
+  <a href="/">Clear</a>
+</form>
+
+<p class="muted"><%= jobs.length %> job<%= jobs.length === 1 ? '' : 's' %></p>
+
+<% if (jobs.length === 0) { %>
+  <div class="empty">No jobs match these filters. Try clearing them, or run <code>npm run fetch</code>.</div>
+<% } %>
+
+<ul class="job-list">
+  <% jobs.forEach((job) => { %>
+    <li class="card<%= job.is_active ? '' : ' inactive' %>">
+      <div>
+        <a class="job-title" href="/job/<%= job.id %>"><%= job.title %></a>
+        <div class="job-company"><%= job.company %></div>
+        <div class="job-meta">
+          <span class="badge src-<%= job.source %>"><%= job.source %></span>
+          <span><%= job.location || 'Location not listed' %></span>
+          <% if (job.salary) { %><span><%= job.salary %></span><% } %>
+          <% if (job.posted_at) { %>
+            <span>Posted <%= timeAgo(job.posted_at) %></span>
+          <% } else { %>
+            <span>Added <%= timeAgo(job.first_seen_at) %></span>
+          <% } %>
+          <% if (!job.is_active) { %><span class="tag-inactive">Inactive</span><% } %>
+        </div>
+      </div>
+      <a class="details-link" href="/job/<%= job.id %>">Details</a>
+    </li>
+  <% }) %>
+</ul>
+<%- include('partials/footer') %>

@@ -1,0 +1,42 @@
+<%- include('partials/header', { title: job.title }) %>
+<a class="back" href="/">Back to jobs</a>
+
+<article class="card detail">
+  <header>
+    <h1><%= job.title %></h1>
+    <div class="job-company"><%= job.company %></div>
+    <div class="job-meta">
+      <span class="badge src-<%= job.source %>"><%= job.source %></span>
+      <% if (job.is_active) { %>
+        <span class="tag-active">Active</span>
+      <% } else { %>
+        <span class="tag-inactive">Inactive</span>
+      <% } %>
+    </div>
+  </header>
+
+  <dl class="meta-grid">
+    <dt>Location</dt><dd><%= job.location || 'Not listed' %></dd>
+    <dt>Salary</dt><dd><%= job.salary || 'Not listed' %></dd>
+    <dt>Posted</dt><dd><%= job.posted_at ? new Date(job.posted_at).toDateString() : 'Not listed' %></dd>
+    <dt>First seen</dt><dd><%= new Date(job.first_seen_at).toDateString() %></dd>
+  </dl>
+
+  <% if (job.apply_url && /^https?:\/\//i.test(job.apply_url)) { %>
+    <a class="btn" href="<%= job.apply_url %>" target="_blank" rel="noopener noreferrer">Apply on company site</a>
+  <% } %>
+
+  <section class="description">
+    <h2>Description</h2>
+    <% if (job.description) { %>
+      <div class="rich"><%- job.description %></div>
+    <% } else { %>
+      <p class="muted">No description was provided. Use the apply link for details.</p>
+    <% } %>
+  </section>
+
+  <form method="post" action="/job/<%= job.id %>/<%= job.is_active ? 'deactivate' : 'activate' %>">
+    <button type="submit" class="btn-secondary"><%= job.is_active ? 'Mark as inactive' : 'Mark as active' %></button>
+  </form>
+</article>
+<%- include('partials/footer') %>

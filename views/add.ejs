@@ -1,0 +1,41 @@
+<%- include('partials/header', { title: 'Add job' }) %>
+<h1>Add a job</h1>
+
+<% if (errors.length) { %>
+  <div class="alert" role="alert">
+    <ul>
+      <% errors.forEach((e) => { %><li><%= e %></li><% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form class="card form" method="post" action="/add">
+  <label>
+    Job title *
+    <input name="title" required maxlength="200" value="<%= values.title || '' %>">
+  </label>
+  <label>
+    Company *
+    <input name="company" required maxlength="200" value="<%= values.company || '' %>">
+  </label>
+  <label>
+    Location
+    <input name="location" placeholder="Pune, Maharashtra" maxlength="200" value="<%= values.location || '' %>">
+  </label>
+  <label>
+    Salary
+    <input name="salary" placeholder="for example, INR 4 LPA" maxlength="100" value="<%= values.salary || '' %>">
+  </label>
+  <label>
+    Apply link
+    <input type="url" name="apply_url" placeholder="https://" value="<%= values.apply_url || '' %>">
+  </label>
+  <label>
+    Description
+    <textarea name="description" rows="6"><%= values.description || '' %></textarea>
+  </label>
+  <div>
+    <button type="submit">Save job</button>
+  </div>
+</form>
+<%- include('partials/footer') %>

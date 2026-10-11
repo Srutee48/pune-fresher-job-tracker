@@ -1,0 +1,43 @@
+<%- include('partials/header', { title: 'Stats' }) %>
+<h1>Stats</h1>
+
+<section class="stat-grid">
+  <div class="card stat">
+    <span class="stat-num"><%= totals.active %></span>
+    <span class="muted">Active jobs</span>
+  </div>
+  <div class="card stat">
+    <span class="stat-num"><%= totals.total %></span>
+    <span class="muted">Total jobs stored</span>
+  </div>
+</section>
+
+<section class="card section">
+  <h2>Jobs per source</h2>
+  <% if (bySource.length === 0) { %>
+    <p class="muted">No jobs yet. Run <code>npm run seed</code> or <code>npm run fetch</code>.</p>
+  <% } %>
+  <% bySource.forEach((row) => { %>
+    <div class="bar-row">
+      <span><span class="badge src-<%= row.source %>"><%= row.source %></span></span>
+      <div class="bar-track"><div class="bar-fill src-<%= row.source %>" style="width: <%= row.pct %>%"></div></div>
+      <span class="bar-value"><%= row.count %></span>
+    </div>
+  <% }) %>
+</section>
+
+<section class="card section">
+  <h2>Jobs added per day (last 14 days)</h2>
+  <div class="chart">
+    <% days.forEach((d) => { %>
+      <div class="chart-col" title="<%= d.day %>: <%= d.count %> added">
+        <span class="chart-value"><%= d.count %></span>
+        <div class="chart-area">
+          <div class="chart-bar" style="height: <%= d.pct %>%"></div>
+        </div>
+        <span class="chart-label"><%= d.label %></span>
+      </div>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>
